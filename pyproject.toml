@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "telegram-bot"
+version = "0.1.0"
+description = ""
+authors = ["pafnutiy <105767751+pvfnutiy@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-telegram-bot = "^20.7"
+beautifulsoup4 = "^4.12.2"
+requests = "^2.31.0"
+cloudscraper = "^1.2.71"
+selenium = "^4.15.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
