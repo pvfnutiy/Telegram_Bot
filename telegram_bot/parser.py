@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
+import json
 
 class ozon_parsing():
     def __init__(self, url:str):
@@ -15,14 +16,8 @@ class ozon_parsing():
         self.rawurl = '/'.join(self.rawurl)
         return self.apiurl + self.rawurl
 
-    def get_json(self, url:str):
+    def get_info(self, url:str):
         self.src = self.driver.get(url)
         self.srcdata = self.driver.page_source
-        self.soup = BeautifulSoup(self.srcdata, 'html.parser')
-        self.result = self.soup.findAll('span')
-        self.captured_data = []
-        for self.data in self.result:
-            if self.data.find('span', class_="15m m13") is not None:
-                self.captured_data.append(self.data)
-        if self.captured_data == []:
-            return "None"
+        self.result = BeautifulSoup(self.srcdata, 'html.parser').find("thinsp", class_="15m ml3")
+        print(self.result)
