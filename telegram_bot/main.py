@@ -1,5 +1,5 @@
 import logging
-from telegram import Update, Message
+from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
 from parser import ozon_parsing
 
@@ -18,7 +18,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     usrdata = update.message.text
     op = ozon_parsing(usrdata)
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=op.get_json(op.get_api_url()))
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=op.get_info(op.url))
     
 
 if __name__ == '__main__':

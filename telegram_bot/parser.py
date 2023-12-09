@@ -1,28 +1,27 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
+import re
 
 class ozon_parsing():
     def __init__(self, url:str):
         self.url = url
-        self.apiurl = "https://www.ozon.ru/api/entrypoint-api.bx/page/json/v2?url=%2F"
-        self.rawurl = self.url.split('/')
         self.driver = webdriver.Chrome()
 
-    def get_api_url(self):
-        for i in range(0, 3):
-            del self.rawurl[i]
-        del self.rawurl[0]
-        self.rawurl = '/'.join(self.rawurl)
-        return self.apiurl + self.rawurl
-
-    def get_json(self, url:str):
+    def get_info(self, url:str):
+        self.Data = []
         self.src = self.driver.get(url)
         self.srcdata = self.driver.page_source
-        self.soup = BeautifulSoup(self.srcdata, 'html.parser')
-        self.result = self.soup.findAll('span')
-        self.captured_data = []
-        for self.data in self.result:
-            if self.data.find('span', class_="15m m13") is not None:
-                self.captured_data.append(self.data)
-        if self.captured_data == []:
-            return "None"
+        self.soup = BeautifulSoup(self.srcdata, 'html.parser').findAll('div', attrs={'class': {'m4l'}})
+        self.result = ''.join(str(self.soup[0]))
+        self.result = re.split(">", self.result)
+
+        for i in self.result:
+            for j in i:
+                if j == '₽':
+                    self.Data.append(i)
+        
+        self.Data = ''.join(self.Data)
+        self.Data = re.split("<"+"/span", self.Data)
+
+        print(' '.join(self.Data))
+        return f'Цена с озон-картой: {self.Data[0]}\nЦена без озон карты: {self.Data[1]}\nСтарая цена: {self.Data[2]}'
